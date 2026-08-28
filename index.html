@@ -44,8 +44,8 @@
         }
 
         html, body {
-            max-width: 100%;
-            overflow-x: hidden;
+            max-width: 100vw;
+            overflow-x: hidden !important;
         }
 
         * {
@@ -64,13 +64,13 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px 12px;
         }
 
         .main-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
             width: 100%;
             max-width: 900px;
             overflow: hidden;
@@ -84,13 +84,14 @@
             gap: 12px;
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 12px 24px;
+            padding: 12px 16px;
             border-radius: 12px;
+            width: 100%;
         }
 
         .controls-group {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -99,10 +100,10 @@
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
         }
 
@@ -118,9 +119,10 @@
             padding: 8px 14px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .cheat-btn.active {
@@ -139,26 +141,29 @@
 
         .lang-select {
             width: auto;
-            padding: 8px 12px;
+            padding: 8px 8px;
+            font-size: 13px;
         }
 
         .container {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 32px;
+            padding: 20px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
             width: 100%;
+            overflow: hidden;
         }
 
         h2, h3 {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             font-weight: 700;
             color: var(--text-main);
             word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
-        h2 { text-align: center; }
+        h2 { text-align: center; font-size: 20px; }
 
         .section-header {
             display: flex;
@@ -166,7 +171,8 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            width: 100%;
         }
 
         .section-header h2, .section-header h3 {
@@ -175,33 +181,33 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
         }
 
-        .form-group { margin-bottom: 16px; }
+        .form-group { margin-bottom: 14px; }
 
         label {
             display: block;
             margin-bottom: 6px;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-muted);
         }
 
         input, select {
             width: 100%;
-            padding: 12px;
+            padding: 10px 12px;
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             color: var(--text-main);
-            font-size: 15px;
+            font-size: 14px;
             outline: none;
         }
 
         input:focus, select:focus { border-color: var(--accent); }
 
-        .radio-group { display: flex; gap: 12px; }
+        .radio-group { display: flex; gap: 8px; }
 
         .radio-label {
             flex: 1;
@@ -211,6 +217,7 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             cursor: pointer;
+            font-size: 14px;
         }
 
         .radio-group input[type="radio"] { display: none; }
@@ -224,15 +231,15 @@
 
         button.btn-submit {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background-color: var(--accent);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         button.btn-submit:hover { background-color: var(--accent-hover); }
@@ -241,8 +248,8 @@
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
+            padding: 16px;
+            margin-top: 16px;
             width: 100%;
         }
 
@@ -251,8 +258,10 @@
         .progress-header {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
         .progress-bar-bg {
@@ -270,15 +279,16 @@
 
         .remaining-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 8px;
+            margin-top: 16px;
             text-align: center;
+            width: 100%;
         }
 
         .rem-item {
             background-color: var(--card-bg);
-            padding: 10px;
+            padding: 8px 6px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             min-width: 0;
@@ -288,28 +298,27 @@
             display: block;
             font-size: 11px;
             color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            word-break: break-word;
         }
 
         .rem-item span {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--success);
+            word-break: break-all;
         }
 
         .filter-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             width: 100%;
         }
 
         .filter-buttons {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
 
@@ -317,10 +326,10 @@
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .filter-btn.active, .filter-btn:hover {
@@ -331,34 +340,48 @@
 
         .food-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            width: 100%;
         }
 
         .food-card {
             background-color: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 16px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 12px;
+            gap: 10px;
             min-width: 0;
+            width: 100%;
         }
 
-        .food-title { font-weight: 600; font-size: 15px; word-break: break-word; }
+        .food-title {
+            font-weight: 600;
+            font-size: 14px;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        .food-card small {
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
 
         .add-box {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
+            width: 100%;
         }
 
         .add-box input {
-            padding: 6px 8px;
+            padding: 8px;
             font-size: 13px;
-            width: 90px;
+            flex: 1;
+            min-width: 60px;
             text-align: center;
         }
 
@@ -367,13 +390,14 @@
             color: white;
             border: none;
             border-radius: 6px;
-            padding: 6px 12px;
+            padding: 8px 12px;
             cursor: pointer;
             font-size: 13px;
             font-weight: 600;
+            white-space: nowrap;
         }
 
-        .journal-list { list-style: none; margin-top: 15px; }
+        .journal-list { list-style: none; margin-top: 10px; width: 100%; }
 
         .journal-item {
             display: flex;
@@ -381,13 +405,15 @@
             align-items: center;
             padding: 10px 0;
             border-bottom: 1px solid var(--border-color);
-            font-size: 14px;
+            font-size: 13px;
             gap: 8px;
+            width: 100%;
         }
 
         .journal-item > div {
             min-width: 0;
             word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .btn-delete {
@@ -398,16 +424,18 @@
             font-size: 16px;
             font-weight: bold;
             flex-shrink: 0;
+            padding: 4px;
         }
 
         .btn-clear {
             background-color: transparent;
             border: 1px solid var(--danger);
             color: var(--danger);
-            padding: 6px 12px;
+            padding: 6px 10px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            white-space: nowrap;
         }
 
         .btn-clear:hover {
@@ -415,13 +443,13 @@
             color: white;
         }
 
-        /* 📌 MODAL (ამომხტომი ფანჯარა) */
+        /* 📌 MODAL */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(5px);
             display: flex;
@@ -431,6 +459,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 16px;
         }
 
         .modal-overlay.active {
@@ -442,9 +471,9 @@
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 28px;
-            width: 90%;
-            max-width: 500px;
+            padding: 20px;
+            width: 100%;
+            max-width: 450px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             transform: translateY(-20px);
             transition: transform 0.3s ease;
@@ -457,8 +486,8 @@
 
         .close-modal-btn {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 12px;
+            right: 12px;
             background: none;
             border: none;
             color: var(--text-muted);
@@ -471,38 +500,60 @@
         }
 
         .rules-modal-body p {
-            margin-bottom: 12px;
-            line-height: 1.6;
-            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            font-size: 13px;
             color: var(--text-muted);
             word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .rules-modal-body a {
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
+            word-break: break-all;
         }
 
         .rules-modal-body a:hover {
             text-decoration: underline;
         }
 
+        /* 📱 მობილურის ეკრანების ოპტიმიზაცია (600px-მდე) */
         @media (max-width: 600px) {
             body {
-                padding: 16px 10px;
+                padding: 10px 6px;
             }
 
             .container {
-                padding: 16px;
+                padding: 14px 10px;
             }
 
             .top-bar {
-                padding: 12px 16px;
+                padding: 10px;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr; /* მობილურზე ბარათები გადადის 1 სვეტად */
             }
 
             .remaining-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .section-header h2, .section-header h3 {
+                text-align: left !important;
+            }
+
+            .cheat-btn {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -513,7 +564,7 @@
 
     <!-- პანელი -->
     <div class="top-bar">
-        <h3 style="margin: 0; font-size: 18px;">🥑 NutriTrack</h3>
+        <h3 style="margin: 0; font-size: 16px;">🥑 NutriTrack</h3>
         <div class="controls-group">
             <button class="rules-btn" onclick="toggleRulesModal()">📜 წესები</button>
             <select id="lang-select" class="lang-select" onchange="changeLanguage(this.value)">
@@ -640,7 +691,7 @@
 <div class="modal-overlay" id="rules-modal" onclick="closeRulesOnOverlay(event)">
     <div class="modal-content">
         <button class="close-modal-btn" onclick="toggleRulesModal()">✕</button>
-        <h3 style="margin-bottom: 16px;">📜 წესები და პირობები</h3>
+        <h3 style="margin-bottom: 14px;">📜 წესები და პირობები</h3>
         <div class="rules-modal-body">
             <p>გაითვალისწინეთ, რომ აპლიკაციაში მითითებული გრამაჟობა და კალორიულობა არ არის 100%-ით ზუსტი. მონაცემები ეფუძნება საშუალო სტანდარტულ მაჩვენებლებს და შესაძლოა მცირედით განსხვავდებოდეს რეალური პროდუქტებისგან.</p>
             <p>პრეტენზია შეგიძლიათ გამოგვიგზავნოთ მეილზე: <a href="mailto:ChvenSulPexebzeGvkidiaYvelaperi@gmail.com">ChvenSulPexebzeGvkidiaYvelaperi@gmail.com</a></p>
@@ -649,7 +700,6 @@
 </div>
 
 <script>
-    // 📱 ტელეფონში 2-ჯერ სწრაფი დაჭერისას (Double-tap zoom) ეკრანის დიდების დაბლოკვა
     let lastTouchEnd = 0;
     document.addEventListener('touchend', function (event) {
         const now = (new Date()).getTime();
@@ -786,7 +836,6 @@
         const foodTitle = document.getElementById('food-db-title');
         const lang = i18n[currentLang];
 
-        // 🚨 საიტის ბექგრაუნდის გადაყვანა წითელზე 🚨
         document.documentElement.setAttribute('data-cheat', isCheatDay ? 'true' : 'false');
 
         if (isCheatDay) {
@@ -974,7 +1023,7 @@
         const lang = i18n[currentLang];
 
         if (journal.length === 0) {
-            journalList.innerHTML = `<li style="color: var(--text-muted); font-size: 14px;">${lang.empty_journal}</li>`;
+            journalList.innerHTML = `<li style="color: var(--text-muted); font-size: 13px;">${lang.empty_journal}</li>`;
         } else {
             journalList.innerHTML = '';
             const allFoods = [...rawFoodDB, ...cheatFoodDB];
