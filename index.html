@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="ka" data-theme="dark" data-cheat="false">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calorie & Macro Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+GO:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --input-bg: #f8fafc;
+            --danger: #dc2626;
+        }
+
+        /* 🚨 დარღვევის დღის წითელი თემა 🚨 */
+        [data-cheat="true"] {
+            --bg-color: #2a0808 !important;
+            --card-bg: #450a0a !important;
+            --accent: #dc2626 !important;
+            --accent-hover: #b91c1c !important;
+            --text-main: #fef2f2 !important;
+            --text-muted: #fca5a5 !important;
+            --border-color: #7f1d1d !important;
+            --input-bg: #1f0404 !important;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Fira GO', sans-serif;
+            transition: background-color 0.4s ease, color 0.3s ease, border-color 0.3s ease;
+            touch-action: manipulation;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: 12px;
+        }
+
+        .controls-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .theme-toggle-btn, .rules-btn {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .rules-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .cheat-btn {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cheat-btn.active {
+            background-color: var(--danger);
+            border-color: var(--danger);
+            color: white;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .lang-select {
+            width: auto;
+            padding: 8px 12px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        h2, h3 {
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        h2 { text-align: center; }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2, .section-header h3 {
+            margin-bottom: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .form-group { margin-bottom: 16px; }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus, select:focus { border-color: var(--accent); }
+
+        .radio-group { display: flex; gap: 12px; }
+
+        .radio-label {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] { display: none; }
+
+        .radio-group input[type="radio"]:checked + .radio-label {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+
+        button.btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button.btn-submit:hover { background-color: var(--accent-hover); }
+
+        .tracker-card {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .progress-box { margin-bottom: 16px; }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar-bg {
+            background-color: var(--card-bg);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background-color: var(--accent);
+            height: 100%;
+            width: 0%;
+        }
+
+        .remaining-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .rem-item {
+            background-color: var(--card-bg);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .rem-item small {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .rem-item span {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .filter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .food-card {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .food-title { font-weight: 600; font-size: 15px; }
+
+        .add-box {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .add-box input {
+            padding: 6px 8px;
+            font-size: 13px;
+            width: 90px;
+            text-align: center;
+        }
+
+        .btn-add {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .journal-list { list-style: none; margin-top: 15px; }
+
+        .journal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-clear:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* 📌 MODAL (ამომხტომი ფანჯარა) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .close-modal-btn:hover {
+            color: var(--danger);
+        }
+
+        .rules-modal-body p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .rules-modal-body a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .rules-modal-body a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+
+    <!-- პანელი -->
+    <div class="top-bar">
+        <h3 style="margin: 0; font-size: 18px;">🥑 NutriTrack</h3>
+        <div class="controls-group">
+            <button class="rules-btn" onclick="toggleRulesModal()">📜 წესები</button>
+            <select id="lang-select" class="lang-select" onchange="changeLanguage(this.value)">
+                <option value="ka">ქართული 🇬🇪</option>
+                <option value="en">English 🇬🇧</option>
+                <option value="ru">Русский 🐷</option>
+            </select>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">☀️ Light</button>
+        </div>
+    </div>
+
+    <!-- 1. კალკულატორი -->
+    <div class="container">
+        <h2 data-i18n="calc_title">კალორიების & მაკროების კალკულატორი</h2>
+        <form id="calc-form">
+            <div class="form-group">
+                <label data-i18n="gender">სქესი</label>
+                <div class="radio-group">
+                    <input type="radio" id="male" name="gender" value="male" checked>
+                    <label for="male" class="radio-label" data-i18n="male">კაცი</label>
+                    <input type="radio" id="female" name="gender" value="female">
+                    <label for="female" class="radio-label" data-i18n="female">ქალი</label>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="age" data-i18n="age">ასაკი</label>
+                    <input type="number" id="age" required min="15" max="100" placeholder="25">
+                </div>
+                <div class="form-group">
+                    <label for="weight" data-i18n="weight">წონა (კგ)</label>
+                    <input type="number" id="weight" required min="30" max="300" placeholder="75">
+                </div>
+                <div class="form-group">
+                    <label for="height" data-i18n="height">სიმაღლე (სმ)</label>
+                    <input type="number" id="height" required min="100" max="250" placeholder="178">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="activity" data-i18n="activity">აქტივობის დონე</label>
+                <select id="activity">
+                    <option value="1.2" data-i18n="act_1">მინიმალური (ჯდომითი / უმოძრაო)</option>
+                    <option value="1.375" data-i18n="act_2">მსუბუქი (კვირაში 1-3 ვარჯიში)</option>
+                    <option value="1.55" data-i18n="act_3">საშუალო (კვირაში 3-5 ვარჯიში)</option>
+                    <option value="1.725" data-i18n="act_4">მაღალი (კვირაში 6-7 მძიმე ვარჯიში)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="goal" data-i18n="goal">მიზანი</label>
+                <select id="goal">
+                    <option value="maintain" data-i18n="goal_maintain">წონის შენარჩუნება</option>
+                    <option value="lose" data-i18n="goal_lose">წონის დაკლება (-15%)</option>
+                    <option value="gain" data-i18n="goal_gain">წონის მომატება (+15%)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit" data-i18n="btn_calc">ლიმიტის დაყენება</button>
+        </form>
+
+        <div class="tracker-card">
+            <h3 data-i18n="daily_progress">დღიური პროგრესი</h3>
+            
+            <div class="progress-box">
+                <div class="progress-header">
+                    <span><span data-i18n="calories">კალორიები</span>: <b id="consumed-cals">0</b> / <span id="target-cals">0</span> <span data-i18n="kcal">კკალ</span></span>
+                    <span id="percent-cals">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-bar"></div>
+                </div>
+            </div>
+
+            <div class="remaining-grid">
+                <div class="rem-item">
+                    <small data-i18n="rem_cals">დარჩენილი კალორია</small>
+                    <span id="rem-cals">0</span>
+                </div>
+                <div class="rem-item">
+                    <small data-i18n="rem_protein">დარჩენილი ცილა</small>
+                    <span id="rem-protein">0g</span>
+                </div>
+                <div class="rem-item">
+                    <small data-i18n="rem_fat">დარჩენილი ცხიმი</small>
+                    <span id="rem-fat">0g</span>
+                </div>
+                <div class="rem-item">
+                    <small data-i18n="rem_carbs">დარჩენილი ნახშ.</small>
+                    <span id="rem-carbs">0g</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. დღიური -->
+    <div class="container">
+        <div class="section-header">
+            <h3 data-i18n="eaten_today">დღეს მიღებული საკვები</h3>
+            <button class="btn-clear" onclick="clearJournal()" data-i18n="clear_journal">დღიურის გასუფთავება</button>
+        </div>
+        <ul class="journal-list" id="journal-list"></ul>
+    </div>
+
+    <!-- 3. საკვების ბაზა -->
+    <div class="container">
+        <div class="section-header">
+            <h2 id="food-db-title" style="text-align: left;" data-i18n="food_db">საკვების ბაზა (მიუთითე გრამი)</h2>
+            <button class="cheat-btn" id="cheat-btn" onclick="toggleCheatMode()">🍔 დარღვევის დღე</button>
+        </div>
+        
+        <div class="filter-container" id="filter-container">
+            <input type="text" id="search-input" placeholder="მოძებნე..." onkeyup="searchFood()">
+            <div class="filter-buttons" id="filter-buttons-wrapper"></div>
+        </div>
+
+        <div class="food-grid" id="food-container"></div>
+    </div>
+
+</div>
+
+<!-- 📌 წესების ამომხტომი ფანჯარა (MODAL) -->
+<div class="modal-overlay" id="rules-modal" onclick="closeRulesOnOverlay(event)">
+    <div class="modal-content">
+        <button class="close-modal-btn" onclick="toggleRulesModal()">✕</button>
+        <h3 style="margin-bottom: 16px;">📜 წესები და პირობები</h3>
+        <div class="rules-modal-body">
+            <p>გაითვალისწინეთ, რომ აპლიკაციაში მითითებული გრამაჟობა და კალორიულობა არ არის 100%-ით ზუსტი. მონაცემები ეფუძნება საშუალო სტანდარტულ მაჩვენებლებს და შესაძლოა მცირედით განსხვავდებოდეს რეალური პროდუქტებისგან.</p>
+            <p>პრეტენზია შეგიძლიათ გამოგვიგზავნოთ მეილზე: <a href="mailto:ChvenSulPexebzeGvkidiaYvelaperi@gmail.com">ChvenSulPexebzeGvkidiaYvelaperi@gmail.com</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 📱 ტელეფონში 2-ჯერ სწრაფი დაჭერისას (Double-tap zoom) ეკრანის დიდების დაბლოკვა
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+
+    const i18n = {
+        ka: {
+            calc_title: "კალორიების & მაკროების კალკულატორი", gender: "სქესი", male: "კაცი", female: "ქალი",
+            age: "ასაკი", weight: "წონა (კგ)", height: "სიმაღლე (სმ)", activity: "აქტივობის დონე",
+            act_1: "მინიმალური (ჯდომითი)", act_2: "მსუბუქი (1-3 ვარჯიში)", act_3: "საშუალო (3-5 ვარჯიში)", act_4: "მაღალი (6-7 ვარჯიში)",
+            goal: "მიზანი", goal_maintain: "წონის შენარჩუნება", goal_lose: "წონის დაკლება (-15%)", goal_gain: "წონის მომატება (+15%)",
+            btn_calc: "ლიმიტის დაყენება", daily_progress: "დღიური პროგრესი", calories: "კალორიები", kcal: "კკალ",
+            rem_cals: "დარჩენილი კალორია", rem_protein: "დარჩენილი ცილა", rem_fat: "დარჩენილი ცხიმი", rem_carbs: "დარჩენილი ნახშ.",
+            eaten_today: "დღეს მიღებული საკვები", clear_journal: "გასუფთავება", empty_journal: "ჯერ არაფერი გიჭამიათ...",
+            food_db: "საკვების ბაზა (მიუთითე გრამი)", search_ph: "მოძებნე პროდუქტი...",
+            cat_all: "ყველა", cat_meat: "ხორცი & თევზი", cat_dairy: "რძის ნაწარმი", cat_grains: "ბურღულეული", cat_veggies: "ბოსტნეული", cat_fruits: "ხილი", cat_nuts: "თხილეული",
+            unit_gram: "გრამი", unit_pcs: "ცალი", unit_portion: "1 ულუფა", unit_100g: "100 გრამი",
+            add: "დამატება", protein_short: "ცილა", fat_short: "ცხ", carb_short: "ნახშ",
+            cheat_btn: "🚨 დარღვევის დღე!", normal_btn: "🍔 დარღვევის დღე",
+            junk_title: "🍕 Junk Food-ის ბაზა (მიუთითე რაოდენობა)"
+        },
+        en: {
+            calc_title: "Calorie & Macro Calculator", gender: "Gender", male: "Male", female: "Female",
+            age: "Age", weight: "Weight (kg)", height: "Height (cm)", activity: "Activity Level",
+            act_1: "Sedentary (little to no exercise)", act_2: "Lightly active (1-3 days/wk)", act_3: "Moderately active (3-5 days/wk)", act_4: "Very active (6-7 days/wk)",
+            goal: "Goal", goal_maintain: "Maintain weight", goal_lose: "Weight loss (-15%)", goal_gain: "Weight gain (+15%)",
+            btn_calc: "Set Target", daily_progress: "Daily Progress", calories: "Calories", kcal: "kcal",
+            rem_cals: "Remaining Cals", rem_protein: "Remaining Protein", rem_fat: "Remaining Fat", rem_carbs: "Remaining Carbs",
+            eaten_today: "Food Eaten Today", clear_journal: "Clear Journal", empty_journal: "No food logged yet...",
+            food_db: "Food Database (Enter grams)", search_ph: "Search food...",
+            cat_all: "All", cat_meat: "Meat & Fish", cat_dairy: "Dairy", cat_grains: "Grains", cat_veggies: "Veggies", cat_fruits: "Fruits", cat_nuts: "Nuts & Fats",
+            unit_gram: "Grams", unit_pcs: "Pcs", unit_portion: "1 serving", unit_100g: "100g",
+            add: "Add", protein_short: "P", fat_short: "F", carb_short: "C",
+            cheat_btn: "🚨 Cheat Day Active!", normal_btn: "🍔 Cheat Day",
+            junk_title: "🍕 Junk Food Database (Enter quantity)"
+        },
+        ru: {
+            calc_title: "Калькулятор калорий и макросов", gender: "Пол", male: "Мужчина", female: "Женщина",
+            age: "Возраст", weight: "Вес (кг)", height: "Рост (см)", activity: "Уровень активности",
+            act_1: "Минимальный (сидячий)", act_2: "Легкий (1-3 тренировки)", act_3: "Средний (3-5 тренировок)", act_4: "Высокий (6-7 тренировок)",
+            goal: "Цель", goal_maintain: "Сохранение веса", goal_lose: "Снижение веса (-15%)", goal_gain: "Набор массы (+15%)",
+            btn_calc: "Установить цель", daily_progress: "Дневной прогресс", calories: "Калории", kcal: "ккал",
+            rem_cals: "Осталось калорий", rem_protein: "Осталось белков", rem_fat: "Осталось жиров", rem_carbs: "Осталось углев.",
+            eaten_today: "Съедено за сегодня", clear_journal: "Очистить", empty_journal: "Вы еще ничего не добавили...",
+            food_db: "База продуктов (Укажите граммы)", search_ph: "Поиск продуктов...",
+            cat_all: "Все", cat_meat: "Мясо и Рыба", cat_dairy: "Молочные", cat_grains: "Крупы", cat_veggies: "Овощи", cat_fruits: "Фрукты", cat_nuts: "Орехи и Жиры",
+            unit_gram: "Граммы", unit_pcs: "Шт", unit_portion: "1 порция", unit_100g: "100г",
+            add: "Добавить", protein_short: "Б", fat_short: "Ж", carb_short: "У",
+            cheat_btn: "🚨 Читмил активен!", normal_btn: "🍔 Читмил",
+            junk_title: "🍕 База Junk Food (Укажите кол-во)"
+        }
+    };
+
+    let currentLang = localStorage.getItem('calTracker_lang') || 'ka';
+    let currentTheme = localStorage.getItem('calTracker_theme') || 'dark';
+    let isCheatDay = false;
+    let currentCategory = 'all';
+
+    let target = JSON.parse(localStorage.getItem('calTracker_target')) || { cals: 2000, p: 150, f: 55, c: 225 };
+    let journal = JSON.parse(localStorage.getItem('calTracker_journal')) || [];
+    let consumed = { cals: 0, p: 0, f: 0, c: 0 };
+
+    let rawFoodDB = [];
+    let cheatFoodDB = [];
+    let currentActiveDB = [];
+
+    function toggleRulesModal() {
+        const modal = document.getElementById('rules-modal');
+        modal.classList.toggle('active');
+    }
+
+    function closeRulesOnOverlay(event) {
+        if (event.target.id === 'rules-modal') {
+            toggleRulesModal();
+        }
+    }
+
+    async function fetchFoodDatabases() {
+        const files = [
+            { url: 'foods.json', type: 'healthy' },
+            { url: 'cheat_mcdonalds.json', brand: 'mcdonalds' },
+            { url: 'cheat_kfc.json', brand: 'kfc' },
+            { url: 'cheat_wendys.json', brand: 'wendys' },
+            { url: 'cheat_subway.json', brand: 'subway' },
+            { url: 'cheat_dunkin.json', brand: 'dunkin' }
+        ];
+
+        const results = await Promise.all(
+            files.map(async (file) => {
+                try {
+                    const res = await fetch(file.url);
+                    if (!res.ok) return [];
+                    const data = await res.json();
+                    return data.map(item => ({ ...item, brand: item.brand || file.brand }));
+                } catch (err) {
+                    console.error(`❌ ${file.url} ფაილის შეცდომა:`, err);
+                    return [];
+                }
+            })
+        );
+
+        rawFoodDB = results[0] || [];
+        cheatFoodDB = results.slice(1).flat();
+
+        if (rawFoodDB.length === 0) {
+            rawFoodDB = [
+                { id: 1, name: "ქათმის ფილე", name_en: "Chicken Breast", name_ru: "Куриная грудка", cat: "meat", cals100: 165, p100: 31, f100: 3.6, c100: 0 },
+                { id: 2, name: "ბრინჯი (მოხარშული)", name_en: "Rice (Boiled)", name_ru: "Рис (вареный)", cat: "grains", cals100: 130, p100: 2.7, f100: 0.3, c100: 28 }
+            ];
+        }
+
+        if (cheatFoodDB.length === 0) {
+            cheatFoodDB = [
+                { id: 101, name: "Big Mac", name_en: "Big Mac", name_ru: "Биг Мак", brand: "mcdonalds", cals100: 550, p100: 25, f100: 30, c100: 45 }
+            ];
+        }
+
+        currentActiveDB = isCheatDay ? cheatFoodDB : rawFoodDB;
+        renderFilterButtons();
+        applyFilters();
+        recalculateTotals();
+    }
+
+    function toggleCheatMode() {
+        isCheatDay = !isCheatDay;
+        currentCategory = 'all';
+        document.getElementById('search-input').value = '';
+
+        const cheatBtn = document.getElementById('cheat-btn');
+        const foodTitle = document.getElementById('food-db-title');
+        const lang = i18n[currentLang];
+
+        // 🚨 საიტის ბექგრაუნდის გადაყვანა წითელზე 🚨
+        document.documentElement.setAttribute('data-cheat', isCheatDay ? 'true' : 'false');
+
+        if (isCheatDay) {
+            cheatBtn.classList.add('active');
+            cheatBtn.innerText = lang.cheat_btn;
+            foodTitle.innerText = lang.junk_title;
+            currentActiveDB = cheatFoodDB;
+        } else {
+            cheatBtn.classList.remove('active');
+            cheatBtn.innerText = lang.normal_btn;
+            foodTitle.innerText = lang.food_db;
+            currentActiveDB = rawFoodDB;
+        }
+
+        renderFilterButtons();
+        applyFilters();
+    }
+
+    function renderFilterButtons() {
+        const wrapper = document.getElementById('filter-buttons-wrapper');
+        const lang = i18n[currentLang];
+
+        if (isCheatDay) {
+            wrapper.innerHTML = `
+                <button class="filter-btn active" onclick="filterByBrand('all', this)">${lang.cat_all}</button>
+                <button class="filter-btn" onclick="filterByBrand('mcdonalds', this)">McDonald's</button>
+                <button class="filter-btn" onclick="filterByBrand('kfc', this)">KFC</button>
+                <button class="filter-btn" onclick="filterByBrand('wendys', this)">Wendy's</button>
+                <button class="filter-btn" onclick="filterByBrand('subway', this)">Subway</button>
+                <button class="filter-btn" onclick="filterByBrand('dunkin', this)">Dunkin'</button>
+            `;
+        } else {
+            wrapper.innerHTML = `
+                <button class="filter-btn active" onclick="filterFood('all', this)">${lang.cat_all}</button>
+                <button class="filter-btn" onclick="filterFood('meat', this)">${lang.cat_meat}</button>
+                <button class="filter-btn" onclick="filterFood('dairy', this)">${lang.cat_dairy}</button>
+                <button class="filter-btn" onclick="filterFood('grains', this)">${lang.cat_grains}</button>
+                <button class="filter-btn" onclick="filterFood('veggies', this)">${lang.cat_veggies}</button>
+                <button class="filter-btn" onclick="filterFood('fruits', this)">${lang.cat_fruits}</button>
+                <button class="filter-btn" onclick="filterFood('nuts', this)">${lang.cat_nuts}</button>
+            `;
+        }
+    }
+
+    function initTheme() {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        document.getElementById('theme-btn').innerText = currentTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    }
+
+    function toggleTheme() {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('calTracker_theme', currentTheme);
+        initTheme();
+    }
+
+    function changeLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('calTracker_lang', lang);
+        document.getElementById('lang-select').value = lang;
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (i18n[lang] && i18n[lang][key]) el.innerText = i18n[lang][key];
+        });
+
+        document.getElementById('search-input').placeholder = i18n[lang].search_ph;
+
+        const cheatBtn = document.getElementById('cheat-btn');
+        if (isCheatDay) {
+            cheatBtn.innerText = i18n[lang].cheat_btn;
+            document.getElementById('food-db-title').innerText = i18n[lang].junk_title;
+        } else {
+            cheatBtn.innerText = i18n[lang].normal_btn;
+            document.getElementById('food-db-title').innerText = i18n[lang].food_db;
+        }
+
+        renderFilterButtons();
+        applyFilters();
+        updateUI();
+    }
+
+    function getFoodName(item) {
+        if (currentLang === 'en' && item.name_en) return item.name_en;
+        if (currentLang === 'ru' && item.name_ru) return item.name_ru;
+        return item.name;
+    }
+
+    function saveData() {
+        localStorage.setItem('calTracker_target', JSON.stringify(target));
+        localStorage.setItem('calTracker_journal', JSON.stringify(journal));
+    }
+
+    document.getElementById('calc-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const gender = document.querySelector('input[name="gender"]:checked').value;
+        const age = parseFloat(document.getElementById('age').value);
+        const weight = parseFloat(document.getElementById('weight').value);
+        const height = parseFloat(document.getElementById('height').value);
+        const activity = parseFloat(document.getElementById('activity').value);
+        const goal = document.getElementById('goal').value;
+
+        let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+        bmr += (gender === 'male') ? 5 : -161;
+
+        let tdee = bmr * activity;
+        if (goal === 'lose') tdee *= 0.85;
+        if (goal === 'gain') tdee *= 1.15;
+
+        target.cals = Math.round(tdee);
+        target.p = Math.round((target.cals * 0.30) / 4);
+        target.f = Math.round((target.cals * 0.25) / 9);
+        target.c = Math.round((target.cals * 0.45) / 4);
+
+        saveData();
+        updateUI();
+    });
+
+    function addFood(id) {
+        const input = document.getElementById(`grams-${id}`);
+        const qty = parseFloat(input.value);
+
+        if (!qty || qty <= 0) return alert('Enter a valid quantity!');
+
+        const food = currentActiveDB.find(item => item.id === id);
+        if (!food) return;
+
+        const isJunk = isCheatDay;
+        const multiplier = isJunk ? qty : (qty / 100);
+
+        journal.push({
+            jId: Date.now(),
+            foodId: food.id,
+            isCheat: isJunk,
+            amount: qty,
+            cals: Math.round(food.cals100 * multiplier),
+            p: Math.round((food.p100 * multiplier) * 10) / 10,
+            f: Math.round((food.f100 * multiplier) * 10) / 10,
+            c: Math.round((food.c100 * multiplier) * 10) / 10
+        });
+
+        input.value = '1';
+        saveData();
+        recalculateTotals();
+    }
+
+    function removeFood(jId) {
+        journal = journal.filter(item => item.jId !== jId);
+        saveData();
+        recalculateTotals();
+    }
+
+    function clearJournal() {
+        if (confirm('დარწმუნებული ხართ, რომ გსურთ წაშლა?')) {
+            journal = [];
+            saveData();
+            recalculateTotals();
+        }
+    }
+
+    function recalculateTotals() {
+        consumed = { cals: 0, p: 0, f: 0, c: 0 };
+        journal.forEach(item => {
+            consumed.cals += item.cals;
+            consumed.p += item.p;
+            consumed.f += item.f;
+            consumed.c += item.c;
+        });
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('target-cals').innerText = target.cals;
+        document.getElementById('consumed-cals').innerText = consumed.cals;
+
+        document.getElementById('rem-cals').innerText = Math.max(0, target.cals - consumed.cals);
+        document.getElementById('rem-protein').innerText = Math.max(0, Math.round(target.p - consumed.p)) + 'g';
+        document.getElementById('rem-fat').innerText = Math.max(0, Math.round(target.f - consumed.f)) + 'g';
+        document.getElementById('rem-carbs').innerText = Math.max(0, Math.round(target.c - consumed.c)) + 'g';
+
+        const percent = target.cals > 0 ? Math.min(Math.round((consumed.cals / target.cals) * 100), 100) : 0;
+        document.getElementById('percent-cals').innerText = percent + '%';
+        document.getElementById('progress-bar').style.width = percent + '%';
+
+        const journalList = document.getElementById('journal-list');
+        const lang = i18n[currentLang];
+
+        if (journal.length === 0) {
+            journalList.innerHTML = `<li style="color: var(--text-muted); font-size: 14px;">${lang.empty_journal}</li>`;
+        } else {
+            journalList.innerHTML = '';
+            const allFoods = [...rawFoodDB, ...cheatFoodDB];
+
+            journal.forEach(item => {
+                const foodItem = allFoods.find(f => f.id === item.foodId);
+                const foodName = foodItem ? getFoodName(foodItem) : 'Food';
+                const unitText = item.isCheat ? lang.unit_pcs : 'g';
+
+                journalList.innerHTML += `
+                    <li class="journal-item">
+                        <div>
+                            <b>${foodName}</b> (${item.amount}${unitText}) - 
+                            <span style="color: var(--accent);">${item.cals} ${lang.kcal}</span> 
+                            <small style="color: var(--text-muted);">(${lang.protein_short}: ${item.p}g, ${lang.fat_short}: ${item.f}g, ${lang.carb_short}: ${item.c}g)</small>
+                        </div>
+                        <button class="btn-delete" onclick="removeFood(${item.jId})">✕</button>
+                    </li>
+                `;
+            });
+        }
+    }
+
+    function renderFood(items) {
+        const container = document.getElementById('food-container');
+        container.innerHTML = '';
+        const lang = i18n[currentLang];
+
+        if (!items || items.length === 0) {
+            container.innerHTML = `<p style="color: var(--text-muted);">შედეგი ვერ მოიძებნა...</p>`;
+            return;
+        }
+
+        items.forEach(item => {
+            const foodName = getFoodName(item);
+            const portionLabel = isCheatDay ? lang.unit_portion : lang.unit_100g;
+            const inputPlaceholder = isCheatDay ? lang.unit_pcs : lang.unit_gram;
+            const defaultValue = isCheatDay ? 1 : 100;
+
+            container.innerHTML += `
+                <div class="food-card">
+                    <div>
+                        <div class="food-title">${foodName}</div>
+                        <small style="color: var(--text-muted); font-size: 11px;">${portionLabel}: ${item.cals100} ${lang.kcal} (${lang.protein_short}: ${item.p100}g | ${lang.fat_short}: ${item.f100}g | ${lang.carb_short}: ${item.c100}g)</small>
+                    </div>
+                    <div class="add-box">
+                        <input type="number" id="grams-${item.id}" placeholder="${inputPlaceholder}" min="1" value="${defaultValue}">
+                        <button class="btn-add" onclick="addFood(${item.id})">${lang.add}</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function filterFood(category, btnElement) {
+        document.querySelectorAll('#filter-buttons-wrapper .filter-btn').forEach(btn => btn.classList.remove('active'));
+        if (btnElement) btnElement.classList.add('active');
+        currentCategory = category;
+        applyFilters();
+    }
+
+    function filterByBrand(brand, btnElement) {
+        filterFood(brand, btnElement);
+    }
+
+    function searchFood() {
+        applyFilters();
+    }
+
+    function applyFilters() {
+        const query = document.getElementById('search-input').value.toLowerCase().trim();
+
+        const filtered = currentActiveDB.filter(item => {
+            const matchesCategory = (currentCategory === 'all') || 
+                (isCheatDay ? item.brand === currentCategory : item.cat === currentCategory);
+
+            const name = getFoodName(item).toLowerCase();
+            const matchesSearch = !query || name.includes(query);
+
+            return matchesCategory && matchesSearch;
+        });
+
+        renderFood(filtered);
+    }
+
+    initTheme();
+    changeLanguage(currentLang);
+    fetchFoodDatabases();
+</script>
+
+</body>
+</html>
